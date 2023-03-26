@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useMemo, useState } from "react"
 import { FormCheckedValues, FormValidations, InitialForm } from "./interfaces"
 
 
-export const useForm = <I extends object, F extends FormValidations>(initialForm: I, validations: F) => {
+export const useForm = <I extends InitialForm, F extends FormValidations>(initialForm: I, validations: F) => {
 
     const [formState, setFormState] = useState(initialForm)
 
