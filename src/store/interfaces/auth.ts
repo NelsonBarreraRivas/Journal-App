@@ -8,7 +8,7 @@ export interface initialStateAuth {
     uid: string | null,
     email: string | null,
     displayName: string | null
-    photoURL: string | null
+    photoURL: string | null | undefined
     errorMessage: string | null
     ok?: boolean
     errorCode: string | null | any
@@ -24,7 +24,7 @@ export interface stateAuth {
     uid: string | null
     email: string | null
     displayName: string | null
-    photoURL: string | null
+    photoURL: string | null | undefined
     errorMessage?: string | null
     ok?: boolean
 }

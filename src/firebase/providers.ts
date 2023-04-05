@@ -1,10 +1,51 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
+import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, inMemoryPersistence, setPersistence, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
 import { formDataLogin, formDataRegister } from '../store'
 import { FirebaseAuth, firebaseAuthErrorCodes } from './config'
 
-const googleAuthProvider = new GoogleAuthProvider()
 
+const googleAuthProvider = new GoogleAuthProvider()
+const facebookAuthProvider = new FacebookAuthProvider()
+
+
+facebookAuthProvider.setCustomParameters({
+    'prompt': 'select_account'
+});
+
+
+
+export const singInWithFacebook = async () => {
+
+
+    try {
+        const { user } = await signInWithPopup(FirebaseAuth, facebookAuthProvider)
+
+        const { displayName, email, photoURL, uid } = user
+        
+
+        return {
+            ok: true,
+            displayName,
+            email,
+            photoURL,
+            uid
+        }
+
+    } catch (error: any) {
+        console.error(error);
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        return {
+            ok: false,
+            errorMessage: firebaseAuthErrorCodes[errorCode] ?? errorMessage,
+            errorCode
+        }
+    }
+
+}
 export const singInWithGoogle = async () => {
+
+
     try {
         const { user } = await signInWithPopup(FirebaseAuth, googleAuthProvider)
 
@@ -67,10 +108,10 @@ export const loginWithEmailPassword = async ({ email, password }: formDataLogin)
 
     try {
 
-        const { operationType, providerId, user } = await signInWithEmailAndPassword( FirebaseAuth, email, password )
+        const { operationType, providerId, user } = await signInWithEmailAndPassword(FirebaseAuth, email, password)
 
         const { uid, displayName, photoURL } = user
-        
+
         return {
             ok: true,
             displayName,
@@ -78,9 +119,9 @@ export const loginWithEmailPassword = async ({ email, password }: formDataLogin)
             photoURL,
             uid
         }
-        
 
-    } catch (error : any) {
+
+    } catch (error: any) {
         console.error(error);
         // Handle Errors here.
         const errorCode = error.code;
@@ -94,5 +135,5 @@ export const loginWithEmailPassword = async ({ email, password }: formDataLogin)
 }
 
 export const logoutFirebase = async () => {
-    return await FirebaseAuth.signOut()
+    return await signOut(FirebaseAuth)
 } 

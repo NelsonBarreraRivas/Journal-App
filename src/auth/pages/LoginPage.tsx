@@ -2,7 +2,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { FormValidations, useForm } from "../../hooks"
 import { FormEvent, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../store"
-import { checkingErrors, startGoogleSignIn, startLoginWithEmailPassword } from "../../store/auth"
+import { checkingErrors, startFacebookSignIn, startGoogleSignIn, startLoginWithEmailPassword } from "../../store/auth"
 
 import Button from "@mui/material/Button"
 import Grid from "@mui/material/Grid"
@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography"
 import Google from '@mui/icons-material/Google'
 import Link from "@mui/material/Link"
 import Alert from "@mui/material/Alert";
+import Facebook  from "@mui/icons-material/Facebook";
 
 const formData = {
     email: '',
@@ -56,11 +57,18 @@ export const LoginPage = () => {
     }
 
     const onGoogleSignIn = () => {
+        console.log('google');
         dispatch(startGoogleSignIn())
     }
 
-    const checkError = () => {
+    const onFacebookSignIn = () => {
+        console.log('fb');
+        
+        dispatch(  startFacebookSignIn() )
+    }
 
+    const checkError = () => {
+        
         dispatch(checkingErrors())
     }
 
@@ -143,7 +151,6 @@ export const LoginPage = () => {
                         <Grid
                             item
                             xs={12}
-                            sm={6}
                         >
                             <Button
                                 variant="contained"
@@ -157,17 +164,34 @@ export const LoginPage = () => {
                         <Grid
                             item
                             xs={12}
-                            sm={6}
                         >
 
                             <Button
                                 variant="contained"
+                                color="success"
                                 fullWidth
                                 onClick={onGoogleSignIn}
                                 disabled={isAuthenticating}
                             >
                                 <Google />
                                 <Typography sx={{ ml: 1 }}>Google</Typography>
+                            </Button>
+                        </Grid>
+
+                        <Grid
+                            item
+                            xs={12}
+                        >
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                fullWidth
+                                onClick={onFacebookSignIn}
+                                disabled={isAuthenticating}
+                            >
+                                <Facebook />
+                                <Typography sx={{ ml: 1 }}>Facebook</Typography>
                             </Button>
                         </Grid>
                     </Grid>

@@ -7,7 +7,7 @@ import { useMemo, useEffect, ChangeEvent, useRef } from "react"
 import Swal from "sweetalert2"
 import 'sweetalert2/dist/sweetalert2.css'
 import { formatDate } from "../../helpers"
-import { useForm } from "../../hooks"
+import { FormValidations, InitialForm, useForm } from "../../hooks"
 import { Note, useAppDispatch, useAppSelector } from "../../store"
 import { setActiveNote, startDeletingNote, startSaveNote, startUploadingFiles } from "../../store/journal"
 import { ImageGallery } from "../components"
@@ -21,7 +21,7 @@ export const NoteView = () => {
 
     const { active: note, messageSaved, isSaving } = useAppSelector(state => state.journal)
 
-    const { formState, isEmpty, body, title, date, onChangue } = useForm(note as Note, {})
+    const { formState, isEmpty, body, title, date, onChangue } = useForm(note, {})
 
     const dateString = useMemo(() => {
 
