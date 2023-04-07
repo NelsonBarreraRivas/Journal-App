@@ -1,4 +1,4 @@
-import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, inMemoryPersistence, setPersistence, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
 import { formDataLogin, formDataRegister } from '../store'
 import { FirebaseAuth, firebaseAuthErrorCodes } from './config'
 
@@ -135,5 +135,5 @@ export const loginWithEmailPassword = async ({ email, password }: formDataLogin)
 }
 
 export const logoutFirebase = async () => {
-    return await signOut(FirebaseAuth)
+    return await FirebaseAuth.signOut()
 } 
