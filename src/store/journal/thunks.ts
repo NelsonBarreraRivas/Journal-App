@@ -94,6 +94,6 @@ export const startDeletingNote = () => {
         
         await deleteDoc( docRef )
 
-        dispatch( deleteNoteById( id ) )
+        dispatch( deleteNoteById( id! ) )
     }
 }

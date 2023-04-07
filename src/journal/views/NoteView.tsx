@@ -7,7 +7,6 @@ import { useMemo, useEffect, ChangeEvent, useRef } from "react"
 import Swal from "sweetalert2"
 import 'sweetalert2/dist/sweetalert2.css'
 import { formatDate } from "../../helpers"
-import { FormValidations, InitialForm, useForm } from "../../hooks"
 import { Note, useAppDispatch, useAppSelector } from "../../store"
 import { setActiveNote, startDeletingNote, startSaveNote, startUploadingFiles } from "../../store/journal"
 import { ImageGallery } from "../components"
@@ -15,20 +14,14 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import IconButton from "@mui/material/IconButton"
 import DeleteOutline from "@mui/icons-material/DeleteOutline"
 
+import { useFormik } from "formik";
+
 export const NoteView = () => {
 
     const dispatch = useAppDispatch()
 
     const { active: note, messageSaved, isSaving } = useAppSelector(state => state.journal)
-
-    const { formState, isEmpty, body, title, date, onChangue } = useForm(note, {})
-
-    const dateString = useMemo(() => {
-
-        const newDate = formatDate(+date)
-        return newDate
-
-    }, [date])
+    
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -42,21 +35,43 @@ export const NoteView = () => {
         dispatch(startSaveNote())
     }
 
-    useEffect( () => {
-        dispatch(setActiveNote(formState))
-    },[formState])
 
     const onFileInputChangue = ({ target }: ChangeEvent<HTMLInputElement>) => {
-        
+
         if (target.files?.length === 0) return
 
-        dispatch( startUploadingFiles( target.files as FileList ) )
+        dispatch(startUploadingFiles(target.files as FileList))
     }
 
     const onDelete = () => {
 
-        dispatch( startDeletingNote() )
+        dispatch(startDeletingNote())
     }
+
+    const { handleSubmit, handleChange, values } = useFormik({
+        initialValues: {
+            ...note
+        },
+        onSubmit: values => {
+            onSaveNote()
+        },
+        validateOnChange: false,
+        validateOnBlur: false
+    })
+
+
+    useEffect(() => {
+        dispatch(setActiveNote({ ...values } as Note))
+    }, [values])
+
+
+    const dateString = useMemo(() => {
+
+        const newDate = formatDate(+values.date)
+        return newDate
+
+    }, [values.date])
+
 
     return (
         <Grid
@@ -79,7 +94,7 @@ export const NoteView = () => {
             <Grid item>
 
                 <input
-                    ref={ fileInputRef }
+                    ref={fileInputRef}
                     type="file"
                     multiple
                     hidden
@@ -89,7 +104,7 @@ export const NoteView = () => {
                 <IconButton
                     color="primary"
                     disabled={isSaving}
-                    onClick={ () => fileInputRef.current && fileInputRef.current.click() }
+                    onClick={() => fileInputRef.current && fileInputRef.current.click()}
                 >
                     <FileUploadIcon />
 
@@ -97,9 +112,10 @@ export const NoteView = () => {
 
                 <Button
                     color="primary"
-                    onClick={onSaveNote}
+                    onClick={() => handleSubmit()}
                     disabled={isSaving}
-                    sx={{ px:3 }}
+                    sx={{ px: 3 }}
+                    type="submit"
                 >
                     <SaveOutlined />
                     Guardar
@@ -114,8 +130,8 @@ export const NoteView = () => {
                     label={'Título'}
                     sx={{ border: 'none', mb: 1 }}
                     name={'title'}
-                    value={title}
-                    onChange={onChangue}
+                    value={values.title}
+                    onChange={handleChange}
                 />
                 <TextField
                     type={'text'}
@@ -126,15 +142,15 @@ export const NoteView = () => {
                     sx={{ border: 'none', mb: 1 }}
                     minRows={5}
                     name={'body'}
-                    value={body}
-                    onChange={onChangue}
+                    value={values.body}
+                    onChange={handleChange}
                 />
             </Grid>
 
             <Grid container justifyContent={'end'}>
                 <Button
-                    onClick={ onDelete }
-                    sx={{ mt:2 }}
+                    onClick={onDelete}
+                    sx={{ mt: 2 }}
                     color={'error'}
                 >
                     <DeleteOutline />
@@ -143,7 +159,7 @@ export const NoteView = () => {
             </Grid>
 
             {/* Image Gallery */}
-            <ImageGallery imgUrls={ note.imageUrls } />
+            <ImageGallery imgUrls={note.imageUrls} />
 
         </Grid>
     )
