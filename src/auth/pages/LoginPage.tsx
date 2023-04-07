@@ -57,12 +57,11 @@ export const LoginPage = () => {
     }
 
     const onGoogleSignIn = () => {
-        console.log('google');
+
         dispatch(startGoogleSignIn())
     }
 
     const onFacebookSignIn = () => {
-        console.log('fb');
         
         dispatch(  startFacebookSignIn() )
     }
