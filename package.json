@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build --noEmitOnError",
     "preview": "vite preview",
-    "start": "pnpm run build && railway run pnpm start:prod",
+    "start": "pnpm run build",
     "test": "jest --watchAll"
   },
   "dependencies": {
