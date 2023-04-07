@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --noEmitOnError",
+    "build": "tsc && vite build",
     "preview": "vite preview",
     "start": "npx http-server ./dist",
     "test": "jest --watchAll"
