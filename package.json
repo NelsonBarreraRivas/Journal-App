@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build --noEmitOnError",
     "preview": "vite preview",
-    "start": "pnpm run build",
+    "start": "npx http-server ./dist",
     "test": "jest --watchAll"
   },
   "dependencies": {
