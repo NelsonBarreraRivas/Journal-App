@@ -56,7 +56,8 @@ export const NoteView = () => {
             onSaveNote()
         },
         validateOnChange: false,
-        validateOnBlur: false
+        validateOnBlur: false,
+        enableReinitialize: true
     })
 
 
