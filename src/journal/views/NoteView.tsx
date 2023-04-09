@@ -18,10 +18,14 @@ import { useFormik } from "formik";
 
 export const NoteView = () => {
 
+    const handleDragStart = (event : React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+    };
+
     const dispatch = useAppDispatch()
 
     const { active: note, messageSaved, isSaving } = useAppSelector(state => state.journal)
-    
+
 
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -133,6 +137,7 @@ export const NoteView = () => {
                     name={'title'}
                     value={values.title}
                     onChange={handleChange}
+                    onDragStart={ handleDragStart}
                 />
                 <TextField
                     type={'text'}
@@ -145,6 +150,7 @@ export const NoteView = () => {
                     name={'body'}
                     value={values.body}
                     onChange={handleChange}
+                    onDragStart={ handleDragStart }
                 />
             </Grid>
 
